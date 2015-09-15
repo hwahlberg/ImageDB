@@ -1,0 +1,32 @@
+{
+  "SourceFile": "/home/bbnthwa/Downloads/cnetsomerhalder001car0058-f2v3.jpg",
+  "ExifTool": {
+    "ExifToolVersion": 9.70
+  },
+  "File": {
+    "FileName": "cnetsomerhalder001car0058-f2v3.jpg",
+    "Directory": "/home/bbnthwa/Downloads",
+    "FileSize": "19 kB",
+    "FileModifyDate": 20150909093342,
+    "FileAccessDate": 20150914144337,
+    "FileInodeChangeDate": 20150909093348,
+    "FilePermissions": "rw-r-----",
+    "FileType": "JPEG",
+    "MIMEType": "image/jpeg",
+    "ImageWidth": 370,
+    "ImageHeight": 208,
+    "EncodingProcess": "Baseline DCT, Huffman coding",
+    "BitsPerSample": 8,
+    "ColorComponents": 3,
+    "YCbCrSubSampling": "YCbCr4:4:4 (1 1)"
+  },
+  "JFIF": {
+    "JFIFVersion": 1.01,
+    "ResolutionUnit": "inches",
+    "XResolution": 72,
+    "YResolution": 72
+  },
+  "Composite": {
+    "ImageSize": "370x208"
+  }
+}

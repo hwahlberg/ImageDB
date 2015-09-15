@@ -1,0 +1,32 @@
+{
+  "SourceFile": "/home/bbnthwa/Downloads/David-Szakaly-6.gif",
+  "ExifTool": {
+    "ExifToolVersion": 9.70
+  },
+  "File": {
+    "FileName": "David-Szakaly-6.gif",
+    "Directory": "/home/bbnthwa/Downloads",
+    "FileSize": "664 kB",
+    "FileModifyDate": 20150914144247,
+    "FileAccessDate": 20150914144311,
+    "FileInodeChangeDate": 20150914144251,
+    "FilePermissions": "rw-r-----",
+    "FileType": "GIF",
+    "MIMEType": "image/gif"
+  },
+  "GIF": {
+    "GIFVersion": "89a",
+    "ImageWidth": 640,
+    "ImageHeight": 640,
+    "HasColorMap": "Yes",
+    "ColorResolutionDepth": 8,
+    "BitsPerPixel": 8,
+    "BackgroundColor": 255,
+    "AnimationIterations": "Infinite",
+    "FrameCount": 15,
+    "Duration": "0.60 s"
+  },
+  "Composite": {
+    "ImageSize": "640x640"
+  }
+}
