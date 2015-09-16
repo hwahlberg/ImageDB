@@ -1,0 +1,70 @@
+-- Table: TAGS
+
+DROP TABLE IF EXISTS TAGS CASCADE;
+
+CREATE TABLE TAGS
+(
+  TAG_ID	integer,
+  TAG_TEXT 	character varying(20),
+  CONSTRAINT TAGID_PK PRIMARY KEY (TAG_ID)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE TAGS
+  OWNER TO photodb;
+
+
+
+-- Table: IMAGE
+
+DROP TABLE IF EXISTS IMAGE CASCADE;
+-- SOURCETYPE: Any of Camera,Scanned, Dia or Unknown
+-- CREATEDATE: timestamp when image wre created, may be entered manually
+-- MODIFYDATE: timestamp if last modified, may be entered manually
+CREATE TABLE IMAGE
+(
+  IMAGE_UUID	uuid NOT NULL,
+  CREATEDATE	timestamp NOT NULL,
+  MODIFYDATE	timestamp,
+  SOURCETYPE	character varying(20) NOT NULL,
+  FILENAME 	character varying(50) NOT NULL,
+  DIRECTORY 	character varying(128) NOT NULL,
+  FILESIZE 	character varying(20),
+  FILETYPE 	character varying(20),
+  IMAGEWIDTH 	integer,
+  IMAGEHEIGHT 	integer,
+  EXIF_DATA     json,
+  CONSTRAINT IMAGEID_PK PRIMARY KEY (IMAGE_UUID),
+  CONSTRAINT "FILENAME_UNQ" UNIQUE (FILENAME)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE IMAGE
+  OWNER TO photodb;
+
+
+
+-- Table: TAGS_XREF
+
+DROP TABLE IF EXISTS TAGS_XREF CASCADE;
+
+CREATE TABLE TAGS_XREF
+(
+  TAG_ID        integer,
+  IMAGE_UUID    uuid,
+  CONSTRAINT TAGID_FK FOREIGN KEY (TAG_ID)
+      REFERENCES TAGS (TAG_ID) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT IMAGEID_FK FOREIGN KEY (IMAGE_UUID)
+      REFERENCES IMAGE (IMAGE_UUID) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE TAGS_XREF
+  OWNER TO photodb;
+
+
