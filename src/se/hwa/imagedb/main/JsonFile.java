@@ -9,6 +9,7 @@ import se.hwa.imagedb.exif.ExifGroup;
 import se.hwa.imagedb.exif.FileGroup;
 import se.hwa.imagedb.exif.GifGroup;
 import se.hwa.imagedb.exif.PngGroup;
+import se.hwa.imagedb.exif.XmpGroup;
 
 /**
  *
@@ -21,6 +22,7 @@ public class JsonFile {
     private ExifGroup EXIF;
     private GifGroup GIF;
     private PngGroup PNG;
+    private XmpGroup XMP;
 
     public JsonFile() {
     }
@@ -43,6 +45,10 @@ public class JsonFile {
 
     public GifGroup getGIF() {
         return GIF;
+    }
+
+    public XmpGroup getXMP() {
+        return XMP;
     }
 
 }

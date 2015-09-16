@@ -19,4 +19,5 @@ public class Constants {
     public static final int DB_TRANSABORT = -3;
     public static final int DB_UNKNOWN = -99;
     public static final String DATE_FORMAT="yyyyMMddHHmmss";
+    public static final String IMAGE_UUID = "Image_UUID";
 }

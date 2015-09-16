@@ -13,6 +13,7 @@ public class ExifGroup {
 
     private String CreateDate;
     private String ModifyDate;
+    private String UserComment;
 
     public ExifGroup() {
     }
@@ -24,5 +25,11 @@ public class ExifGroup {
     public String getModifyDate() {
         return ModifyDate;
     }
+
+    public String getUserComment() {
+        return UserComment;
+    }
+    
+    
 
 }

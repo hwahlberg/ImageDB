@@ -48,7 +48,7 @@ public class Postgresql {
             rs = st.executeQuery("SELECT VERSION()");
 
             if (rs.next()) {
-                System.out.println(rs.getString(1));
+                LOG.trace(rs.getString(1));
             }
 
             // no autocommit
@@ -113,9 +113,12 @@ public class Postgresql {
     /**
      * 
      * @param img
+     * If image already exists i database, UPDATE else INSERT
+     * 
      * @return 
      */
     public int writeDb(ImageObject img) {
+        
         return Constants.DB_OK;
     }
     

@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.StringTokenizer;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -22,6 +24,9 @@ import java.util.Date;
  */
 public class ImageObject {
 
+    private String Image_UUID = null;
+    private String inputCreatedate = null;
+    private String inputModifydate = null;
     private String Createdate = null;
     private String Modifydate = null;
     private String Sourcetype = "??";
@@ -31,11 +36,18 @@ public class ImageObject {
     private String Filetype = null;
     private int Imagewidth = 0;
     private int Imageheight = 0;
+    private JsonObject jo = null;
+
+    private static final Logger LOG = Logger.getLogger(ImageObject.class.getSimpleName());
 
     /**
      *
      */
     public ImageObject() {
+    }
+
+    public String getImage_UUID() {
+        return Image_UUID;
     }
 
     public String getCreatedate() {
@@ -73,17 +85,32 @@ public class ImageObject {
     public int getImageheight() {
         return Imageheight;
     }
-    
-    
-    
+
+    public String getInputCreatedate() {
+        return inputCreatedate;
+    }
+
+    public void setInputCreatedate(String inputCreatedate) {
+        this.inputCreatedate = inputCreatedate;
+    }
+
+    public String getInputModifydate() {
+        return inputModifydate;
+    }
+
+    public void setInputModifydate(String inputModifydate) {
+        this.inputModifydate = inputModifydate;
+    }
+
+    public JsonObject getJo() {
+        return jo;
+    }
 
     /**
      *
      * @param jsonfile
      */
-    public boolean parseJson(String inputfile,
-            String inputCreatedate,
-            String inputModifydate) {
+    public boolean parseJson(String inputfile) {
         boolean retcode = true;
         Gson gson = new Gson();
 
@@ -96,7 +123,7 @@ public class ImageObject {
             BufferedReader br = new BufferedReader(new FileReader(inputfile));
 
             JsonElement je = new JsonParser().parse(br2);
-            JsonObject jo = je.getAsJsonObject();
+            jo = je.getAsJsonObject();
 
             //convert the json string to object  
             JsonFile jsonFile = gson.fromJson(br, JsonFile.class);
@@ -112,19 +139,22 @@ public class ImageObject {
                 Imagewidth = jsonFile.getPNG().getImageWidth();
                 Imageheight = jsonFile.getPNG().getImageHeight();
                 Modifydate = jsonFile.getPNG().getModifyDate();
+                Image_UUID = jsonFile.getEXIF().getUserComment();
 
             } else if (Filetype.equals("GIF")) {
                 Imagewidth = jsonFile.getGIF().getImageWidth();
                 Imageheight = jsonFile.getGIF().getImageHeight();
+                Image_UUID = jsonFile.getXMP().getUserComment();
 
             } else if (Filetype.equals("JPEG")) {
                 Imagewidth = jsonFile.getFile().getImageWidth();
                 Imageheight = jsonFile.getFile().getImageHeight();
                 Modifydate = jsonFile.getEXIF().getModifyDate();
                 Createdate = jsonFile.getEXIF().getCreateDate();
+                Image_UUID = jsonFile.getEXIF().getUserComment();
 
             } else {
-                System.err.println("Unknown filetype " + Filetype + ", exit!");
+                LOG.error("Unknown filetype " + Filetype + ", exit!");
                 return false;
             }
             // override?
@@ -135,6 +165,15 @@ public class ImageObject {
                 Modifydate = inputModifydate;
             }
 
+            /**
+             * Get Image_UUID from UserComment-string If not found, 
+             * don't accept image
+             */
+            Image_UUID = checkImage_UUID(Image_UUID);
+            if (Image_UUID == null) {
+                return false;
+            }
+            
             printit();
 
             if (Createdate != null) {
@@ -144,9 +183,9 @@ public class ImageObject {
             // Ok, now put things in database
 
         } catch (IOException ioe) {
-            System.err.println("Read error json-file " + ioe.getMessage());
+            LOG.error("Read error json-file " + ioe.getMessage());
         } catch (ParseException pe) {
-            System.err.println("Date parse error " + pe.getMessage());
+            LOG.error("Date parse error " + pe.getMessage());
         }
 
         return retcode;
@@ -155,18 +194,55 @@ public class ImageObject {
 
     /**
      *
+     * @param usercomment
+     * Check that image/json file includes Image_UUID i UserComment, ie. format:
+     * Image_UUID:a8bfc53c-f078-401e-974f-a9b84edbcfe9
+     * 
+     * @return
+     */
+    private String checkImage_UUID(String usercomment) {
+        String uuid = null;
+
+        if (usercomment == null) {
+            LOG.error("Missing UserComment tag!");
+            return null;
+        }
+
+        StringTokenizer tk = new StringTokenizer(usercomment, ":");
+        if (tk.countTokens() != 2) {
+            LOG.error("Illegal format UserComment");
+            return null;
+        }
+        String t = tk.nextToken();
+        if (t.equals(Constants.IMAGE_UUID) == false) {
+            LOG.error("Illegal Image_UUID " + t);
+            return null;
+        }
+
+        uuid = tk.nextToken();
+        if (uuid == null || uuid.length() != 36) {
+            LOG.error("Image_UUID missformat, must be 36 chars");
+            return null;
+        }
+
+        return uuid;
+    }
+
+    /**
+     *
      */
     private void printit() {
-        System.out.println("\nReading JSON from a file");
-        System.out.println("----------------------------");
-        System.out.println("Filename=" + Filename);
-        System.out.println("Directory=" + Directory);
-        System.out.println("Filesize=" + Filesize);
-        System.out.println("Filetype=" + Filetype);
-        System.out.println("Imagewidth=" + Imagewidth);
-        System.out.println("Imageheight=" + Imageheight);
-        System.out.println("Createdate=" + Createdate);
-        System.out.println("Modifydate=" + Modifydate);
+        LOG.debug("\nReading JSON from a file");
+        LOG.debug("----------------------------");
+        LOG.debug("Image_UUID   =" + Image_UUID);
+        LOG.debug("Filename     =" + Filename);
+        LOG.debug("Directory    =" + Directory);
+        LOG.debug("Filesize     =" + Filesize);
+        LOG.debug("Filetype     =" + Filetype);
+        LOG.debug("Imagewidth   =" + Imagewidth);
+        LOG.debug("Imageheight  =" + Imageheight);
+        LOG.debug("Createdate   =" + Createdate);
+        LOG.debug("Modifydate   =" + Modifydate);
 
     }
 }

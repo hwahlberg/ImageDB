@@ -5,20 +5,11 @@
  */
 package se.hwa.imagedb.main;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import gnu.getopt.Getopt;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.PropertyConfigurator;
@@ -108,7 +99,9 @@ public class ImageDB {
         for (int i = 0; i < numberOfFiles; i++) {
             String inputfile = args[g.getOptind() + i];
             ImageObject img = new ImageObject();
-            if (img.parseJson(inputfile, inputCreatedate, inputModifydate) == true) {
+            img.setInputCreatedate(inputCreatedate);
+            img.setInputModifydate(inputModifydate);
+            if (img.parseJson(inputfile) == true) {
                 pgdb.writeDb(img);
             }
         }
