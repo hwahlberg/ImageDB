@@ -19,7 +19,8 @@ import se.hwa.imagedb.main.ImageObject;
  * @author bbnthwa
  */
 public class Postgresql {
-        private Connection con = null;
+
+    private Connection con = null;
     private boolean writeflag = false;
     private int dbError;
     private static final Logger LOG = Logger.getLogger(Postgresql.class.getSimpleName());
@@ -108,22 +109,92 @@ public class Postgresql {
 
         return Constants.DB_OK;
     }
-    
-    
+
     /**
-     * 
-     * @param img
-     * If image already exists i database, UPDATE else INSERT
-     * 
-     * @return 
+     *
+     * @param img If image already exists i database, UPDATE else INSERT
+     *
+     * @return
      */
     public int writeDb(ImageObject img) {
-        
+        int returstat;
+        if (imageAlreadyStored(img)) {
+            returstat = updateDB(img);
+        } else {
+            returstat = insertDB(img);
+        }
+
+        return returstat;
+    }
+
+    /**
+     *
+     * @param img
+     * @return
+     */
+    private boolean imageAlreadyStored(ImageObject img) {
+
+        String sql;
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery("SELECT image_uuid from image where image_uuid = '"
+                    + img.getImage_UUID() + "';");
+
+            if (rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException ex) {
+            LOG.error("SELECT image_uuid error " + ex.getMessage());
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param img
+     * @return
+     */
+    private int insertDB(ImageObject img) {
+        int retcode = Constants.DB_OK;
+
+        try {
+            Statement stmt = con.createStatement();
+            String insert = 
+                    "insert into image " + 
+                    "(image_uuid, createdate, modifydate, " + 
+                    "sourcetype, filename, directory, fileszize, filetype " + 
+                    "imagewidth, imageheight) " + 
+                    " values " + 
+                    "'" + img.getImage_UUID() + "'," + 
+                    
+                    ;
+            stmt.executeUpdate(insert);
+
+            con.commit();
+            stmt.close();
+            return retcode;
+        } catch (SQLException ex) {
+            retcode = parseError(ex);
+        }
+
+        return retcode;
+    }
+
+    /**
+     *
+     * @param img
+     * @return
+     */
+    private int updateDB(ImageObject img) {
+
         return Constants.DB_OK;
     }
-    
-    
-    
 
     /**
      * Execute insert statement
@@ -160,5 +231,4 @@ public class Postgresql {
         return dbError;
     }
 
-    
 }

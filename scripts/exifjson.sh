@@ -3,7 +3,13 @@
 
 # Check if file is an image
 # type should be one of:
-acceptedImage=("image/jpeg;" "image/png;" "image/tiff;" "image/gif;")
+acceptedImage=(\
+"image/jpeg;" \
+"image/png;" \
+"image/tiff;" \
+"image/gif;"\
+)
+
 function isImage() {
     local e
     type=$(file -i $1 | awk '{print $2}')
