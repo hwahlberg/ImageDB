@@ -1,0 +1,36 @@
+{
+  "SourceFile": "David-Szakaly-6.gif",
+  "ExifTool": {
+    "ExifToolVersion": 9.70
+  },
+  "File": {
+    "FileName": "David-Szakaly-6.gif",
+    "Directory": ".",
+    "FileSize": "667 kB",
+    "FileModifyDate": 20150915154818,
+    "FileAccessDate": 20150915154818,
+    "FileInodeChangeDate": 20150915154818,
+    "FilePermissions": "rw-r-----",
+    "FileType": "GIF",
+    "MIMEType": "image/gif"
+  },
+  "GIF": {
+    "GIFVersion": "89a",
+    "ImageWidth": 640,
+    "ImageHeight": 640,
+    "HasColorMap": "Yes",
+    "ColorResolutionDepth": 8,
+    "BitsPerPixel": 8,
+    "BackgroundColor": 255,
+    "AnimationIterations": "Infinite",
+    "FrameCount": 15,
+    "Duration": "0.60 s"
+  },
+  "XMP": {
+    "XMPToolkit": "Image::ExifTool 9.70",
+    "UserComment": "Image_UUID:9e57f9ca-6db9-4e35-b8f4-2d79b1d7fa34"
+  },
+  "Composite": {
+    "ImageSize": "640x640"
+  }
+}

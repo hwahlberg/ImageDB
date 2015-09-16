@@ -1,0 +1,47 @@
+{
+  "SourceFile": "cnetsomerhalder001car0058-f2v3.png",
+  "ExifTool": {
+    "ExifToolVersion": 9.70
+  },
+  "File": {
+    "FileName": "cnetsomerhalder001car0058-f2v3.png",
+    "Directory": ".",
+    "FileSize": "93 kB",
+    "FileModifyDate": 20150915154819,
+    "FileAccessDate": 20150915154819,
+    "FileInodeChangeDate": 20150915154819,
+    "FilePermissions": "rw-r--r--",
+    "FileType": "PNG",
+    "MIMEType": "image/png",
+    "ExifByteOrder": "Big-endian (Motorola, MM)"
+  },
+  "PNG": {
+    "ImageWidth": 370,
+    "ImageHeight": 208,
+    "BitDepth": 8,
+    "ColorType": "RGB",
+    "Compression": "Deflate/Inflate",
+    "Filter": "Adaptive",
+    "Interlace": "Adam7 Interlace",
+    "Gamma": 2.2,
+    "BackgroundColor": "255 255 255",
+    "PixelsPerUnitX": 2835,
+    "PixelsPerUnitY": 2835,
+    "PixelUnits": "meters",
+    "ModifyDate": 20150909080650
+  },
+  "EXIF": {
+    "XResolution": 72,
+    "YResolution": 72,
+    "ResolutionUnit": "inches",
+    "YCbCrPositioning": "Centered",
+    "ExifVersion": "0230",
+    "ComponentsConfiguration": "Y, Cb, Cr, -",
+    "UserComment": "Image_UUID:80314ea0-f29e-4bf1-a090-b189a1e596bd",
+    "FlashpixVersion": "0100",
+    "ColorSpace": "Uncalibrated"
+  },
+  "Composite": {
+    "ImageSize": "370x208"
+  }
+}
