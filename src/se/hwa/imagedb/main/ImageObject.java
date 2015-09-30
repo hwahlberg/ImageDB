@@ -12,6 +12,7 @@ import com.google.gson.JsonParser;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -108,6 +109,72 @@ public class ImageObject {
 
     /**
      *
+     * @return Createdate as a Timestamp
+     */
+    public Timestamp getCreatedateAsTimestamp() {
+        return StringToTimestamp(Createdate);
+    }
+
+    /**
+     *
+     * @return Modifydate as a Timestamp
+     */
+    public Timestamp getModifydateAsTimestamp() {
+        return StringToTimestamp(Modifydate);
+    }
+
+    /**
+     * Convert string to Timestamp
+     *
+     * @param datetime
+     * @return
+     */
+    private Timestamp StringToTimestamp(String datetime) {
+        Timestamp timestamp;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+            Date parsedDate = dateFormat.parse(datetime);
+            timestamp = new java.sql.Timestamp(parsedDate.getTime());
+        } catch (Exception e) {
+            return null;
+        }
+
+        return timestamp;
+
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getCreatedateAsToTimestring() {
+        return DateAsToTimestamp(Createdate);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getModifydateAsToTimestring() {
+        return DateAsToTimestamp(Modifydate);
+    }
+
+    /**
+     * Returns datetime as a "to_timestamp(...)" string
+     *
+     * @param datetime
+     * @return
+     */
+    private String DateAsToTimestamp(String datetime) {
+        String timestampString = null;
+        if (datetime != null) {
+            timestampString = "to_timestamp('" + datetime + "','YYYYMMDDHH24MISS')";
+        }
+        return timestampString;
+    }
+
+    /**
+     *
      * @param jsonfile
      */
     public boolean parseJson(String inputfile) {
@@ -166,14 +233,14 @@ public class ImageObject {
             }
 
             /**
-             * Get Image_UUID from UserComment-string If not found, 
-             * don't accept image
+             * Get Image_UUID from UserComment-string If not found, don't accept
+             * image
              */
             Image_UUID = checkImage_UUID(Image_UUID);
             if (Image_UUID == null) {
                 return false;
             }
-            
+
             printit();
 
             if (Createdate != null) {
@@ -194,10 +261,9 @@ public class ImageObject {
 
     /**
      *
-     * @param usercomment
-     * Check that image/json file includes Image_UUID i UserComment, ie. format:
-     * Image_UUID:a8bfc53c-f078-401e-974f-a9b84edbcfe9
-     * 
+     * @param usercomment Check that image/json file includes Image_UUID i
+     * UserComment, ie. format: Image_UUID:a8bfc53c-f078-401e-974f-a9b84edbcfe9
+     *
      * @return
      */
     private String checkImage_UUID(String usercomment) {

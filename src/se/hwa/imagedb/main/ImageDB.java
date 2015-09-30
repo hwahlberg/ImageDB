@@ -112,8 +112,8 @@ public class ImageDB {
      *
      */
     private static void usage() {
-        System.out.println("imagedb version 0.1 April 28");
-        System.out.println("Usage: imagedb [-V ][-w ][-p propertyfile] [-C Createdate] [-M Modifydate] file1 [file2 ...]");
+        System.out.println("imagedb version 0.2 Sept 30");
+        System.out.println("Usage: imagedb [-V ][-w ][-p propertyfile] [-C Createdate] [-M Modifydate] file1.json [file2.json ...]");
         System.exit(0);
     }
 

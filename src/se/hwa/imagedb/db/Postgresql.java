@@ -144,8 +144,10 @@ public class Postgresql {
                     + img.getImage_UUID() + "';");
 
             if (rs.next()) {
+                LOG.debug("exist, update!");
                 return true;
             } else {
+                LOG.debug("not exist, insert!");
                 return false;
             }
         } catch (SQLException ex) {
@@ -163,18 +165,34 @@ public class Postgresql {
     private int insertDB(ImageObject img) {
         int retcode = Constants.DB_OK;
 
+        if (this.writeflag == false) {
+            return retcode;
+        }
+
         try {
             Statement stmt = con.createStatement();
-            String insert = 
-                    "insert into image " + 
-                    "(image_uuid, createdate, modifydate, " + 
-                    "sourcetype, filename, directory, fileszize, filetype " + 
-                    "imagewidth, imageheight) " + 
-                    " values " + 
-                    "'" + img.getImage_UUID() + "'," + 
-                    
-                    ;
-            stmt.executeUpdate(insert);
+            String sql
+                    = "insert into image "
+                    + "(image_uuid, createdate, modifydate, "
+                    + "sourcetype, filename, directory, filesize, filetype, "
+                    + "imagewidth, imageheight, exif_data) "
+                    + " values ("
+                    + "'" + img.getImage_UUID() + "'"
+                    + "," + img.getCreatedateAsToTimestring()
+                    + "," + img.getModifydateAsToTimestring()
+                    + ",'" + img.getSourcetype() + "'"
+                    + ",'" + img.getFilename() + "'"
+                    + ",'" + img.getDirectory() + "'"
+                    + ",'" + img.getFilesize() + "'"
+                    + ",'" + img.getFiletype() + "'"
+                    + "," + img.getImagewidth()
+                    + "," + img.getImageheight()
+                    + ",'" + img.getJo() + "'"
+                    + ")";
+
+            LOG.trace("insert sql=" + sql);
+
+            stmt.executeUpdate(sql);
 
             con.commit();
             stmt.close();
@@ -192,8 +210,40 @@ public class Postgresql {
      * @return
      */
     private int updateDB(ImageObject img) {
+        int retcode = Constants.DB_OK;
 
-        return Constants.DB_OK;
+        if (this.writeflag == false) {
+            return retcode;
+        }
+
+        try {
+            Statement stmt = con.createStatement();
+            String sql
+                    = "update image set "
+                    + "createdate   = " + img.getCreatedateAsToTimestring()
+                    + ",modifydate  = " + img.getModifydateAsToTimestring()
+                    + ",sourcetype  = '" + img.getSourcetype() + "'"
+                    + ",filename    = '" + img.getFilename() + "'"
+                    + ",directory   = '" + img.getDirectory() + "'"
+                    + ",filesize    = '" + img.getFilesize() + "'"
+                    + ",filetype    = '" + img.getFiletype() + "'"
+                    + ",imagewidth  = " + img.getImagewidth()
+                    + ",imageheight = " + img.getImageheight()
+                    + ",exif_data   = '" + img.getJo() + "'"
+                    + " where image_uuid = '" + img.getImage_UUID() + "'";
+
+            LOG.trace("update sql=" + sql);
+
+            stmt.executeUpdate(sql);
+
+            con.commit();
+            stmt.close();
+            return retcode;
+        } catch (SQLException ex) {
+            retcode = parseError(ex);
+        }
+
+        return retcode;
     }
 
     /**

@@ -31,14 +31,15 @@ do
 
 	# check that we don't already have an UserComment with a "Image_UID:.."
 	# If so, skip the file to keep Image_UUID
+	file=$(echo $image | cut -f1 -d.)
 	if [ $(exiftool -UserComment $image | grep "Image_UUID" | wc -l) -eq 0 ]
 	then
 	    echo "Update image $image with UserComment"
 	    UUID=$(uuidgen)
-	    file=$(echo $image | cut -f1 -d.)
 	    exiftool -UserComment="Image_UUID:${UUID}" $image
-	    exiftool  -json -g -s -d %Y%m%d%H%M%S $image | sed -e 's/\[//'g -e 's/\]//g' >${file}.json
 	fi
+	# echo "exiftool  -json -g -s -d %Y%m%d%H%M%S $image | sed -e 's/\[//'g -e 's/\]//g' >${file}.json"
+	exiftool  -json -g -s -d %Y%m%d%H%M%S $image | sed -e 's/\[//'g -e 's/\]//g' >${file}.json
     fi
 done
 
